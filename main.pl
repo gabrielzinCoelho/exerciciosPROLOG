@@ -8,7 +8,6 @@ maiorDeTres(A, B, C, MaiorABC) :-
 
 fatorial(0, 1) :- !.
 fatorial(N, X) :-
-    N > 0,
     NmenosUm is N - 1,
     fatorial(NmenosUm, FatNmenosUm),
     X is N * FatNmenosUm.
@@ -26,3 +25,34 @@ unicaOcorrencia(C, [C|R]) :- !,
     not(pertence(C, R)).
 unicaOcorrencia(X, [_|R]) :-
     unicaOcorrencia(X, R).
+
+maioresQue(X, [C|R], [C|MR]) :-
+    C > X, !,
+    maioresQue(X, R, MR).
+maioresQue(X, [_|R], MR) :-
+    maioresQue(X, R, MR).
+maioresQue(_, [], []).
+
+concatena([C1|R1], L2, [C1|CONC]) :-
+    concatena(R1, L2, CONC).
+concatena([], L2, L2).
+
+remove(C, [C|R], R) :- !.
+remove(X, [C|R], [C|LsemX]) :-
+    remove(X, R, LsemX).
+remove(_, [], []).
+
+removerUltimo([_], []) :- !.
+removerUltimo([C|R], [C|RsemUltimo]) :-
+    removerUltimo(R, RsemUltimo).
+
+% removerRepetidos(L1, L2).
+
+% maiores(N, L)
+
+geraSequencia(1, [1, -1]) :- !.
+geraSequencia(N, L) :-
+    NmenosUm is N - 1,
+    Nnegativo is -N,
+    geraSequencia(NmenosUm, SeqNmenosUm),
+    concatena(SeqNmenosUm, [N, Nnegativo], L).
