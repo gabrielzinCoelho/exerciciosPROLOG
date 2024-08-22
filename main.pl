@@ -38,15 +38,31 @@ concatena([C1|R1], L2, [C1|CONC]) :-
 concatena([], L2, L2).
 
 remove(C, [C|R], R) :- !.
-remove(X, [C|R], [C|LsemX]) :-
-    remove(X, R, LsemX).
+remove(X, [C|R], [C|RsemX]) :-
+    remove(X, R, RsemX).
 remove(_, [], []).
 
 removerUltimo([_], []) :- !.
 removerUltimo([C|R], [C|RsemUltimo]) :-
     removerUltimo(R, RsemUltimo).
 
-% removerRepetidos(L1, L2).
+removerTodos(X, [X|R], RsemX) :- !,
+    removerTodos(X, R, RsemX).
+removerTodos(X, [C|R], [C|RsemX]) :- !,
+    removerTodos(X, R, RsemX).
+removerTodos(_, [], []).
+
+removerRepetidos([C|R], [C|RsemRep]) :-
+    removerTodos(C, R, RsemC),
+    removerRepetidos(RsemC, RsemRep).
+removerRepetidos([], []).
+
+removerRepetidos2([C|R], [C|RsemRep]) :-
+    not(pertence(C, R)), !,
+    removerRepetidos2(R, RsemRep).
+removerRepetidos2([_|R], RsemRep) :-
+    removerRepetidos2(R, RsemRep).
+removerRepetidos2([], []).
 
 % maiores(N, L)
 
@@ -56,3 +72,9 @@ geraSequencia(N, L) :-
     Nnegativo is -N,
     geraSequencia(NmenosUm, SeqNmenosUm),
     concatena(SeqNmenosUm, [N, Nnegativo], L).
+
+
+% ehInteiro(0).
+% ehInteiro(X) :-
+%     ehInteiro(Y),
+%     X is Y + 1.
